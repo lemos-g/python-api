@@ -1,6 +1,27 @@
-def main():
-    print("Hello from python-api-dev!")
+from fastapi import FastAPI
+from fastapi.params import Body
+from pydantic import BaseModel
+from typing import Optional
+
+app = FastAPI()
+
+class Post(BaseModel):
+    title: str
+    content: str
+    publishedd: bool = True
+    rating: Optional[int] = None
+
+@app.get("/")
+def root():
+    return {"message": "Hello, World!"}
 
 
-if __name__ == "__main__":
-    main()
+@app.get("/posts")
+def get_posts():
+    return {"data": "This is your posts"}    
+
+
+@app.post("/createposts")
+def create_posts(new_post: Post):
+    print(new_post.title)
+    return {"data": "new post"}
